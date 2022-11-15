@@ -1,0 +1,18 @@
+.navbar {
+    padding-left: 5%;
+    padding-right: 3%;
+}
+
+body {
+    background-color: grey
+}
+
+.tododiv {
+    margin-left: 100px;
+    margin-right: 20%;
+    margin-top: 5%;
+    margin-bottom: 10%;
+
+    border-color: black;
+    border-top-right-radius: 10%;
+}
