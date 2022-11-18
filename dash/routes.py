@@ -1,10 +1,7 @@
-from flask import Flask, render_template, flash, redirect, url_for
-from forms import LoginForm, RegistrationForm
+from flask import render_template, url_for, flash, redirect
+from dash import app
+from dash.forms import RegistrationForm, LoginForm
 
-
-app = Flask(__name__)
-
-app.config['SECRET_KEY'] = 'b97a0fb6e78773671b40ab10cf5133ea'
 
 @app.route('/')
 @app.route("/home")
