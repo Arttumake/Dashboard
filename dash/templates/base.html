@@ -44,7 +44,9 @@
         {% if messages %}
             {% for category, message in messages %}
                 <div class="alert alert-{{ category }}">
-                    {{ message }}
+                    <div class="text-center">
+                        {{ message }}
+                    </div>
                 </div>
             {% endfor %}
         {% endif %}
