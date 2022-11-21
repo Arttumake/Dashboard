@@ -2,7 +2,7 @@ from flask import render_template, url_for, flash, redirect
 from dash.forms import RegistrationForm, LoginForm
 from dash import app, bcrypt
 from dash.models import db, User
-from flask_login import login_user
+from flask_login import login_user, logout_user
 
 
 @app.route('/')
@@ -29,7 +29,18 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password ,form.password.data):
             login_user(user, remember=form.remember.data)
+            flash('Login successful!', 'success')
             return redirect(url_for('home'))
         else:
-            flash('Login unsuccessfull. Please check email and password', 'danger')
+            flash('Login unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='Login', form=form)
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    flash('Logout successful', 'success')
+    return redirect(url_for('home'))
+
+@app.route('/account')
+def account():
+    return render_template('account.html', title='Login')

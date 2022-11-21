@@ -14,7 +14,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     
     def __repr__(self) -> str:
-        return f"User('{self.username}', '{self.email}')"
+        return f"User ('{self.username}', '{self.email}')"
 
 class Task(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -22,3 +22,6 @@ class Task(db.Model, UserMixin):
     date = db.Column(db.DateTime, nullable=False, default=dt.now())
     content = db.Column(db.Text, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    
+    def __repr__(self) -> str:
+        return f"'{self.title}' date: {self.date} by id: {self.user_id}'"
