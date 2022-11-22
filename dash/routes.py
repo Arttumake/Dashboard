@@ -1,5 +1,5 @@
 from flask import render_template, url_for, flash, redirect
-from dash.forms import RegistrationForm, LoginForm
+from dash.forms import RegistrationForm, LoginForm, TaskForm
 from dash import app, bcrypt
 from dash.models import db, User
 from flask_login import login_user, logout_user
@@ -8,7 +8,8 @@ from flask_login import login_user, logout_user
 @app.route('/')
 @app.route("/home")
 def home():
-    return render_template('home.html', title='Home')
+    form = TaskForm()
+    return render_template('home.html', title='Home', form=form)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
