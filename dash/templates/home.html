@@ -22,7 +22,8 @@
                     <small>{{ form.date.label (class="form-control-label")}}</small>
                 </div>
                 <div>
-                    {{ form.date (class="datepicker") }}
+                    {{ form.date }}
+                    {{ form.time }}
                 </div>
             </div>
             <div class="form-group">
@@ -38,7 +39,7 @@
                     {{ form.contents (class="form-control") }}
                 {% endif %}
             </div> 
-            <div class="form-group">
+            <div class="form-group" href="{{url_for('task')}}">
                 {{ form.submit(class="btn btn-primary")}}
             </div>
             <small class="form-text text-muted ms-2">

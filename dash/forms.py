@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, EmailField, SubmitField, PasswordField, BooleanField, TextAreaField, DateField
+from wtforms import StringField, EmailField, SubmitField, PasswordField, BooleanField, TextAreaField, DateField, TimeField
 from wtforms.validators import Length, Email, DataRequired, EqualTo, ValidationError
 from dash.models import User
+from datetime import datetime as dt
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=16)])
@@ -27,6 +28,7 @@ class LoginForm(FlaskForm):
     
 class TaskForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired(), Length(min=2, max=40)])
-    date = DateField('Date', validators=[DataRequired()], format='%Y-%m-%d')
+    date = DateField('Date', validators=[DataRequired()], format='%Y-%m-%d', default=dt.now())
+    time = TimeField('Time', validators=[DataRequired()], default=dt.now())
     contents = TextAreaField('Task Description', validators=[Length(max=120)])
     submit = SubmitField('Submit')

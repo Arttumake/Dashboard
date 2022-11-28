@@ -1,14 +1,22 @@
 from flask import render_template, url_for, flash, redirect
 from dash.forms import RegistrationForm, LoginForm, TaskForm
 from dash import app, bcrypt
-from dash.models import db, User
-from flask_login import login_user, logout_user
+from dash.models import db, User, Task
+from flask_login import login_user, logout_user, current_user
+from datetime import datetime as dt
 
 
-@app.route('/')
-@app.route("/home")
+@app.route('/', methods=['GET', 'POST'])
+@app.route("/home", methods=['GET', 'POST'])
 def home():
     form = TaskForm()
+    if form.validate_on_submit():
+        combined_date = dt.combine(form.date.data, form.time.data)
+        task = Task(title=form.title.data, date=combined_date, content=form.contents.data, user_id=current_user.id)
+        db.session.add(task)
+        db.session.commit()
+        flash('Task created!', 'success')
+        return redirect(url_for('home'))
     return render_template('home.html', title='Home', form=form)
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -44,4 +52,4 @@ def logout():
 
 @app.route('/account')
 def account():
-    return render_template('account.html', title='Login')
+    return render_template('account.html', title='Account')
