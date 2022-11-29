@@ -18,12 +18,23 @@
     padding: 10px 20px;
     border: 1px solid #dddddd;
     border-radius: 3px;
-    width: 30%;
-    margin:auto;
   }
+
+.form-login{
+    background: #ffffff;
+    padding: 10px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;    
+    margin-left: 30%;
+    margin-right: 30%;
+}  
 
 .form-group {
     padding-top: 12px;
     margin-left: 8px;
     margin-right: 8px;
+}
+
+.container{
+    margin-left: 40px;
 }
