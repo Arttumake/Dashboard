@@ -9,20 +9,36 @@
                 </div>
             </div>
             {% for task in tasks %}
-            <div class="accordion" id="accordion">
+            <div class="accordion mb-2" id="accordion">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="heading{{ loop.index }}">
-                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#A{{ loop.index }}" aria-expanded="false" aria-controls="A{{ loop.index }}">
-                        {{ task.title }}
-                      </button>
-                    </h2>
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#A{{ loop.index }}" aria-expanded="true" aria-controls="A{{ loop.index }}">
+                            <div class="d-flex">
+                                <div class="mr-auto p-2 me-3">{{ task.title }}</div>
+                                <div class="p-2 ms-4">{{ task.date.date() }}</div>
+                                <div class="p-2 ms-4">{{ task.date.time() }}</div>                                                
+                            </div>                              
+                        </button>                     
+                    </h2>                    
                     <div id="A{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="heading{{ loop.index }}" data-bs-parent="#accordion">
-                      <div class="accordion-body">
+                        <div class="accordion-body">
                         {{ task.content }}
-                      </div>
+                            <div class="float-end">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-outline-secondary">
+                                        <i class="bi bi-brush"></i>                                    
+                                    </button>
+                                    <form action="{{ url_for('delete_task', id=task.id) }}" method="POST" enctype="multipart/form-data">
+                                        <button type="submit" class="btn btn-outline-secondary">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>                         
+                        </div>
                     </div>
                 </div>       
-            </div>
+            </div>          
             {% endfor %}
         </div>
         <div class="col">

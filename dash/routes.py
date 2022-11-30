@@ -22,6 +22,17 @@ def home():
         return render_template('home.html', title='Home', form=form, tasks=tasks)
     return render_template('home.html', title='Home', form=form)
 
+@app.route('/delete_task/<int:id>', methods=['POST', 'GET'])
+def delete_task(id):
+    form = TaskForm()
+    if request.method == "POST":
+        task = Task.query.get(id)
+        db.session.delete(task)
+        db.session.commit()
+        flash(f'Task {id} deleted!', 'success')
+        return redirect(url_for('home'))    
+    return render_template('home.html', title='Home', form=form)
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
