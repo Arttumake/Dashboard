@@ -33,6 +33,17 @@ def delete_task(id):
         return redirect(url_for('home'))    
     return render_template('home.html', title='Home', form=form)
 
+# placeholder for editing task, doesn't do anything but redirecting yet
+@app.route('/edit_task/<int:id>', methods=['POST'])
+def edit_task(id):
+    form = TaskForm()
+    if request.method == "POST":
+        task = Task.query.get(id)
+        flash(f'Task {id} edited!', 'success')
+        return redirect(url_for('home'))    
+    return render_template('home.html', title='Home', form=form)
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
