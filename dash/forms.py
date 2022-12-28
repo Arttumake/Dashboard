@@ -31,4 +31,4 @@ class TaskForm(FlaskForm):
     date = DateField('Date', validators=[DataRequired()], format='%Y-%m-%d', default=dt.now())
     time = TimeField('Time', validators=[DataRequired()], default=dt.now())
     contents = TextAreaField('Task Description', validators=[Length(max=120)])
-    submit = SubmitField('Submit')
+    

@@ -2,27 +2,35 @@ from flask import render_template, url_for, flash, redirect, request
 from dash.forms import RegistrationForm, LoginForm, TaskForm
 from dash import app, bcrypt
 from dash.models import db, User, Task
-from flask_login import login_user, logout_user, current_user
+from flask_login import login_user, logout_user, current_user, login_required
 from datetime import datetime as dt
 
 
-@app.route('/', methods=['GET', 'POST'])
+#@app.route('/', methods=['GET', 'POST'])
 @app.route("/home", methods=['GET', 'POST'])
 def home():
+    form = TaskForm()
+
+    if current_user.is_authenticated:
+        tasks = Task.query.filter_by(user_id=current_user.id)
+        return render_template('home.html', title='Home', form=form, tasks=tasks)
+    return render_template('home.html', title='Home', form=form)
+
+@app.route('/create_task', methods=['POST', 'GET'])
+@login_required
+def create_task():
     form = TaskForm()
     if request.method == "POST" and form.validate_on_submit():
         combined_date = dt.combine(form.date.data, form.time.data)
         task = Task(title=form.title.data, date=combined_date, content=form.contents.data, user_id=current_user.id)
         db.session.add(task)
         db.session.commit()
-        flash('Task created!', 'success')
-        return redirect(url_for('home'))
-    if current_user.is_authenticated:
-        tasks = Task.query.filter_by(user_id=current_user.id)
-        return render_template('home.html', title='Home', form=form, tasks=tasks)
+        flash(f'Task created!', 'success')
+        return redirect(url_for('home'))    
     return render_template('home.html', title='Home', form=form)
 
 @app.route('/delete_task/<int:id>', methods=['POST', 'GET'])
+@login_required
 def delete_task(id):
     form = TaskForm()
     if request.method == "POST":
@@ -34,7 +42,8 @@ def delete_task(id):
     return render_template('home.html', title='Home', form=form)
 
 # placeholder for editing task, doesn't do anything but redirecting yet
-@app.route('/edit_task/<int:id>', methods=['POST'])
+@app.route('/edit_task/<int:id>', methods=['POST', 'GET'])
+@login_required
 def edit_task(id):
     form = TaskForm()
     if request.method == "POST":
