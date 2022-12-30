@@ -6,7 +6,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from datetime import datetime as dt
 
 
-#@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 @app.route("/home", methods=['GET', 'POST'])
 def home():
     form = TaskForm()
@@ -48,7 +48,10 @@ def edit_task(id):
     form = TaskForm()
     if request.method == "POST":
         task = Task.query.get(id)
-        flash(f'Task {id} edited!', 'success')
+        text = request.form[f'text{id}']
+        task.content = text
+        db.session.commit()
+        flash(f'edit successful', 'success')
         return redirect(url_for('home'))    
     return render_template('home.html', title='Home', form=form)
 

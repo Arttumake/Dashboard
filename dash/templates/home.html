@@ -23,12 +23,12 @@
                     </h2>                    
                     <div id="A{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="heading{{ loop.index }}" data-bs-parent="#accordion">
                         <div class="accordion-body">
-                        {{ task.content }}
+                            <form id="task{{ task.id }}" action="{{ url_for('edit_task', id=task.id) }}" method="POST">
+                                <textarea class="task-content" cols="50" rows="4" readonly="true" name="text{{ task.id }}"> {{ task.content }} </textarea>
+                            </form>
                             <div class="float-end">
                                 <div class="btn-group">
-                                    <form action="{{ url_for('edit_task', id=task.id) }}" method="POST">
-                                        <button hidden id="saveBtn#{{ loop.index }}" class="btn btn-success">Save</button>
-                                    </form>
+                                    <button hidden id="saveBtn#{{ loop.index }}" class="btn btn-success" form="task{{ task.id }}">Save</button>
                                     <button id="editBtn#{{ loop.index }}" class="btn btn-outline-secondary">
                                         <i class="bi bi-brush"></i>                                    
                                     </button>
@@ -37,9 +37,8 @@
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </form>
-                                      
                                 </div>
-                            </div>                         
+                            </div>
                         </div>
                     </div>
                 </div>       
