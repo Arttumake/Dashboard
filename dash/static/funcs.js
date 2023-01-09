@@ -11,14 +11,14 @@ edit.forEach((item) => {
 
 edit.forEach((item, i) => {
     item.addEventListener('click', () => {
-        if (save[i].hidden === true) {
+        if (save[i].style.visibility !== "visible") {
             console.log("hidden = false");
-            save[i].hidden = false;
+            save[i].style.visibility = "visible";
             content[i].readOnly = false;
         }
         else {
             console.log("hidden = true");
-            save[i].hidden = true;
+            save[i].style.visibility = "hidden";
             content[i].readOnly = true;
         }
     });
@@ -28,7 +28,7 @@ edit.forEach((item, i) => {
 save.forEach((item, i) => {
     item.addEventListener('click', () => {
         console.log("save event")
-        if (content[i].readOnly = false){
+        if (content[i].readOnly = false) {
             content[i].readOnly = true;
         }
         /*

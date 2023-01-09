@@ -18,16 +18,16 @@
     padding: 10px 20px;
     border: 1px solid #dddddd;
     border-radius: 3px;
-  }
+}
 
-.form-login{
+.form-login {
     background: #ffffff;
     padding: 10px 20px;
     border: 1px solid #dddddd;
-    border-radius: 3px;    
+    border-radius: 3px;
     margin-left: 30%;
     margin-right: 30%;
-}  
+}
 
 .form-group {
     padding-top: 12px;
@@ -35,6 +35,19 @@
     margin-right: 8px;
 }
 
-.container{
+.container {
     margin-left: 40px;
+}
+
+.btn-group {
+    margin-left: 55px;
+}
+
+.btn-success {
+    visibility: hidden;
+}
+
+.date-picker {
+    margin-bottom: 5px;
+    width: 150px;
 }

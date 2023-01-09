@@ -10,11 +10,20 @@ from datetime import datetime as dt
 @app.route("/home", methods=['GET', 'POST'])
 def home():
     form = TaskForm()
-
     if current_user.is_authenticated:
-        tasks = Task.query.filter_by(user_id=current_user.id)
-        return render_template('home.html', title='Home', form=form, tasks=tasks)
+        today = dt(dt.today().year, dt.today().month, dt.today().day)
+        tasks = Task.query.filter_by(user_id=current_user.id).filter(Task.date >= today)
+        print(tasks)
+        return render_template('home.html', title="Home", form=form, tasks=tasks)
     return render_template('home.html', title='Home', form=form)
+
+
+@app.route('/get_tasks', methods=['GET'])
+@login_required
+def get_tasks():
+    form = TaskForm()
+    tasks = Task.query.filter_by(user_id=current_user.id, date=dt.today())
+    return render_template('home.html', title="Home", form=form, task=tasks)
 
 @app.route('/create_task', methods=['POST', 'GET'])
 @login_required
@@ -29,6 +38,7 @@ def create_task():
         return redirect(url_for('home'))    
     return render_template('home.html', title='Home', form=form)
 
+
 @app.route('/delete_task/<int:id>', methods=['POST', 'GET'])
 @login_required
 def delete_task(id):
@@ -41,7 +51,7 @@ def delete_task(id):
         return redirect(url_for('home'))    
     return render_template('home.html', title='Home', form=form)
 
-# placeholder for editing task, doesn't do anything but redirecting yet
+
 @app.route('/edit_task/<int:id>', methods=['POST', 'GET'])
 @login_required
 def edit_task(id):
