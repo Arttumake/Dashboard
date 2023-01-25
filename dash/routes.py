@@ -3,7 +3,7 @@ from dash.forms import RegistrationForm, LoginForm, TaskForm
 from dash import app, bcrypt
 from dash.models import db, User, Task
 from flask_login import login_user, logout_user, current_user, login_required
-from datetime import datetime as dt
+from datetime import datetime as dt, timedelta
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -12,7 +12,8 @@ def home():
     form = TaskForm()
     if current_user.is_authenticated:
         today = dt(dt.today().year, dt.today().month, dt.today().day)
-        tasks = Task.query.filter_by(user_id=current_user.id).filter(Task.date >= today)
+        tomorrow = today + timedelta(days=1)
+        tasks = Task.query.filter_by(user_id=current_user.id).filter(Task.date >= today).filter(Task.date < tomorrow)
         print(tasks)
         return render_template('home.html', title="Home", form=form, tasks=tasks)
     return render_template('home.html', title='Home', form=form)
