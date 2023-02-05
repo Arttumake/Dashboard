@@ -32,3 +32,7 @@ class TaskForm(FlaskForm):
     time = TimeField('Time', validators=[DataRequired()], default=dt.now())
     contents = TextAreaField('Task Description', validators=[Length(max=120)])
     
+class CalendarForm(FlaskForm):
+    day = DateField('Day', validators=[DataRequired()], format='%Y-%m-%d', default=dt.now())
+    submit = SubmitField('Go')
+    

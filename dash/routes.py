@@ -1,5 +1,5 @@
 from flask import render_template, url_for, flash, redirect, request
-from dash.forms import RegistrationForm, LoginForm, TaskForm
+from dash.forms import RegistrationForm, LoginForm, TaskForm, CalendarForm
 from dash import app, bcrypt
 from dash.models import db, User, Task
 from flask_login import login_user, logout_user, current_user, login_required
@@ -10,21 +10,25 @@ from datetime import datetime as dt, timedelta
 @app.route("/home", methods=['GET', 'POST'])
 def home():
     form = TaskForm()
+    calendar = CalendarForm()
     if current_user.is_authenticated:
         today = dt(dt.today().year, dt.today().month, dt.today().day)
         tomorrow = today + timedelta(days=1)
         tasks = Task.query.filter_by(user_id=current_user.id).filter(Task.date >= today).filter(Task.date < tomorrow)
-        print(tasks)
-        return render_template('home.html', title="Home", form=form, tasks=tasks)
-    return render_template('home.html', title='Home', form=form)
+        return render_template('home.html', title="Home", form=form, tasks=tasks, calendar = calendar)
+    return render_template('home.html', title='Home', form=form, calendar=calendar)
 
-
-@app.route('/get_tasks', methods=['GET'])
+@app.route('/date', methods=['POST', 'GET'])
 @login_required
-def get_tasks():
+def date():
     form = TaskForm()
-    tasks = Task.query.filter_by(user_id=current_user.id, date=dt.today())
-    return render_template('home.html', title="Home", form=form, task=tasks)
+    calendar = CalendarForm()
+    if calendar.validate_on_submit():
+        picked_date = calendar.day.data
+        day_after = picked_date + timedelta(days=1)
+        tasks = Task.query.filter_by(user_id=current_user.id).filter(Task.date >= picked_date).filter(Task.date < day_after)
+        return render_template ('home.html', title="Home", form=form, calendar = calendar, tasks = tasks)
+    return render_template('home.html', title='Home', form=form, calendar=calendar)
 
 @app.route('/create_task', methods=['POST', 'GET'])
 @login_required
