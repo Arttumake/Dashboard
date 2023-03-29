@@ -2,3 +2,4 @@ __pycache__/
 env
 dash/__pycache__
 instance
+db.py

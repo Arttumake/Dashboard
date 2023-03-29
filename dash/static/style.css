@@ -1,3 +1,9 @@
+body {
+    background-color: rgb(243, 237, 231);
+}
+
+
+
 .navbar {
     padding-left: 5%;
     padding-right: 3%;
@@ -14,7 +20,7 @@
 }
 
 .form-contents {
-    background: #ffffff;
+    background: #f7f4f4;
     padding: 10px 20px;
     border: 1px solid #dddddd;
     border-radius: 3px;

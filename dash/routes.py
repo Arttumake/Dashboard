@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, session
 from dash.forms import RegistrationForm, LoginForm, TaskForm, CalendarForm
 from dash import app, bcrypt
 from dash.models import db, User, Task
@@ -30,10 +30,11 @@ def date():
         return render_template ('home.html', title="Home", form=form, calendar = calendar, tasks = tasks)
     return render_template('home.html', title='Home', form=form, calendar=calendar)
 
-@app.route('/create_task', methods=['POST', 'GET'])
+@app.route('/create_task', methods=['POST'])
 @login_required
 def create_task():
     form = TaskForm()
+    calendar = CalendarForm()
     if request.method == "POST" and form.validate_on_submit():
         combined_date = dt.combine(form.date.data, form.time.data)
         task = Task(title=form.title.data, date=combined_date, content=form.contents.data, user_id=current_user.id)
@@ -41,26 +42,28 @@ def create_task():
         db.session.commit()
         flash(f'Task created!', 'success')
         return redirect(url_for('home'))    
-    return render_template('home.html', title='Home', form=form)
+    return render_template('home.html', title='Home', form=form, calendar=calendar)
 
 
 @app.route('/delete_task/<int:id>', methods=['POST', 'GET'])
 @login_required
 def delete_task(id):
     form = TaskForm()
+    calendar = CalendarForm()
     if request.method == "POST":
         task = Task.query.get(id)
         db.session.delete(task)
         db.session.commit()
         flash(f'Task {id} deleted!', 'success')
         return redirect(url_for('home'))    
-    return render_template('home.html', title='Home', form=form)
+    return render_template('home.html', title='Home', form=form, calendar=calendar)
 
 
 @app.route('/edit_task/<int:id>', methods=['POST', 'GET'])
 @login_required
 def edit_task(id):
     form = TaskForm()
+    calendar = CalendarForm()
     if request.method == "POST":
         task = Task.query.get(id)
         text = request.form[f'text{id}']
@@ -68,7 +71,7 @@ def edit_task(id):
         db.session.commit()
         flash(f'edit successful', 'success')
         return redirect(url_for('home'))    
-    return render_template('home.html', title='Home', form=form)
+    return render_template('home.html', title='Home', form=form, calendar=calendar)
 
 
 @app.route('/register', methods=['GET', 'POST'])
